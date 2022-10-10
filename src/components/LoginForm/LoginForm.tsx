@@ -1,28 +1,30 @@
-import React, { FC, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Row, Form, FloatingLabel, Alert } from "react-bootstrap";
+import React, { FC } from "react";
+import { Link } from "react-router-dom";
+import { Row, Form, FloatingLabel } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import { LoginFormProps, LoginFormValuesProps } from "./LoginForm.types";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const LoginForm: FC<LoginFormProps> = (props) => {
-  const [formValues, setFormValues] = useState<LoginFormValuesProps>({
-    username: "",
-    password: "",
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    } as LoginFormValuesProps,
+    validationSchema: Yup.object({
+      username: Yup.string()
+        .min(3, "En az 3 karakter girmelisiniz.")
+        .required("Bu alan boş geçilemez."),
+      password: Yup.string()
+        .min(3, "En az 3 karakter girmelisiniz.")
+        .required("Bu alan boş geçilemez."),
+    }),
+    onSubmit: (values) => {
+      props.onLogin?.(values);
+    },
   });
 
-  function handleChange(
-    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ): void {
-    const { name, value } = event.target;
-    setFormValues((prev) => ({ ...prev, [name]: value }));
-  }
-
-  const handleSubmit = () => {
-    props.onLogin?.(formValues);
-    console.log(formValues);
-  };
-
-  const [show, setShow] = useState(true);
   return (
     <>
       <Row className="justify-content-center text-center my-3">
@@ -33,51 +35,49 @@ const LoginForm: FC<LoginFormProps> = (props) => {
         <h6>Giriş Formu</h6>
       </Row>
       <Row>
-        <Form>
-          <FloatingLabel
-            controlId="floatingUsername"
-            label="Kullanıcı adı"
-            className="mb-3"
-          >
+        <form onSubmit={formik.handleSubmit}>
+          <FloatingLabel label="Kullanıcı adı" className="mb-3">
             <Form.Control
+              id="username"
+              name="username"
               type="text"
               placeholder="Kullanıcı adı"
-              onChange={handleChange}
-              name="username"
-              value={formValues["username"]}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.username}
             />
+            {formik.touched.username && formik.errors.username ? (
+              <div style={{ color: "red" }}>
+                <small>{formik.errors.username}</small>
+              </div>
+            ) : null}
           </FloatingLabel>
 
-          <FloatingLabel
-            controlId="floatingPassword"
-            label="Şifre"
-            className="mb-3"
-          >
+          <FloatingLabel label="Şifre" className="mb-3">
             <Form.Control
+              id="password"
+              name="password"
               type="password"
               placeholder="Şifre"
-              onChange={handleChange}
-              name="password"
-              value={formValues["password"]}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.password}
             />
+            {formik.touched.password && formik.errors.password ? (
+              <div style={{ color: "red" }}>
+                <small>{formik.errors.password}</small>
+              </div>
+            ) : null}
           </FloatingLabel>
-          <Button className="w-100 mb-3" variant="dark" onClick={handleSubmit}>
+          <Button className="w-100 mb-3" variant="dark" type="submit">
             Giriş Yap
           </Button>
-        </Form>
+        </form>
       </Row>
       <Row className="text-center mb-3">
         <small>
           Hesabın yok mu? <Link to="/register">Kayıt Ol!</Link>
         </small>
-      </Row>
-      <Row>
-        <Alert variant="danger" show={false}>
-          Bilgilerinizi konrtol ediniz.
-        </Alert>
-      </Row>
-      <Row>
-        <Link to="/kanbanboards">kanban boarda git</Link>
       </Row>
     </>
   );

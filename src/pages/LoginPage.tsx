@@ -5,21 +5,20 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import LoginForm from "../components/LoginForm";
 import { LoginFormProps } from "../components/LoginForm/LoginForm.types";
-
+import service from "../services/instance";
 export type LoginPageProps = {
   onSuccess: (token: string) => void;
 };
 const LoginPage: FC<LoginPageProps> = (props) => {
-  const [show, setShow] = useState(true);
   const navigate = useNavigate();
   const handleLogin: LoginFormProps["onLogin"] = (values) => {
-    axios
-      .post("http://localhost:80/auth/login", values)
+    service
+      .post("auth/login", values)
       .then(({ data }) => {
         props.onSuccess?.(data.token);
         navigate("/kanbanboards");
       })
-      .catch(({ error }) => {
+      .catch((error) => {
         toast.error("Bilgilerinizi kontrol ediniz.");
       });
   };

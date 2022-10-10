@@ -5,15 +5,32 @@ import RegisterPage from "./pages/RegisterPage";
 import KanbanBoardsPage from "./pages/KanbanBoardsPage";
 import { ToastContainer } from "react-toastify";
 import { Container } from "react-bootstrap";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [token, setToken] = useState<string>("");
   const handleLogin = (token: string) => {
     setToken(token);
+    localStorage.setItem("token", token);
     setIsLoggedIn(true);
   };
+  useEffect(() => {
+    var localToken = localStorage.getItem("token");
+    if (localToken) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+    return () => {};
+  }, []);
+
+  const handleLogout = () => {
+    setToken("");
+    setIsLoggedIn(false);
+    localStorage.removeItem("token");
+  };
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -27,17 +44,25 @@ const App = () => {
       path: "/register",
       element: <RegisterPage />,
     },
+  ]);
+  const routerLoggedIn = createBrowserRouter([
     {
       path: "/kanbanboards",
-      element: <KanbanBoardsPage />,
+      element: <KanbanBoardsPage onLogout={handleLogout} />,
     },
   ]);
   return (
     <>
-      <Container fluid className="vh-100">
+      <div className="vh-100">
         <ToastContainer autoClose={2000} />
-        <RouterProvider router={router} />
-      </Container>
+        {!isLoggedIn ? (
+          <Container fluid>
+            <RouterProvider router={router} />
+          </Container>
+        ) : (
+          <RouterProvider router={routerLoggedIn} />
+        )}
+      </div>
     </>
   );
 };

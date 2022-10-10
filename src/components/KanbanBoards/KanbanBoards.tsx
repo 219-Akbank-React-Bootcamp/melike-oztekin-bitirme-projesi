@@ -1,7 +1,8 @@
-import React from "react";
+import React, { FC } from "react";
+import { Button } from "react-bootstrap";
 
 const KanbanBoards = () => {
-  return <div>Kanban Boards</div>;
+  return <div className="mx-3">Kanban Boards</div>;
 };
 
 export default KanbanBoards;
