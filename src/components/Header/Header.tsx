@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Navbar, Nav, Container, NavDropdown, Figure } from "react-bootstrap";
+import { Navbar, Container, Button } from "react-bootstrap";
 
 export type HeaderProps = {
   onLogout: () => void;
@@ -12,27 +12,9 @@ const Header: FC<HeaderProps> = (props) => {
         <Navbar.Brand href="#home">Kanban App</Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
-          <Nav>
-            <NavDropdown
-              id="nav-dropdown-dark-example"
-              title="{username}"
-              menuVariant="dark"
-            >
-              <NavDropdown.Item href="#">Profil</NavDropdown.Item>
-              <NavDropdown.Item href="#">Ayarlar</NavDropdown.Item>
-              <NavDropdown.Item href="#">Yardım</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item onClick={props.onLogout}>
-                Çıkış Yap
-              </NavDropdown.Item>
-            </NavDropdown>
-            <Figure.Image
-              width={35}
-              height={35}
-              className="rounded-circle mx-2"
-              src="https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-512.png"
-            />
-          </Nav>
+          <Button variant="outline-light" onClick={props.onLogout}>
+            Çıkış Yap <i className="fa-solid fa-right-from-bracket"></i>
+          </Button>
         </Navbar.Collapse>
       </Container>
     </Navbar>
