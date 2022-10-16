@@ -6,7 +6,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import KanbanBoardsPage from "./pages/KanbanBoardsPage";
-import BoardPage from "./pages/BoardPage";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -50,10 +49,6 @@ const App = () => {
     {
       path: "/kanbanboards",
       element: <KanbanBoardsPage onLogout={handleLogout} />,
-    },
-    {
-      path: "/board",
-      element: <BoardPage onLogout={handleLogout} />,
     },
   ]);
   return (

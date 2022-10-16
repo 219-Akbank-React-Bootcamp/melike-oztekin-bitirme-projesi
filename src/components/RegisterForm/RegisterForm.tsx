@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
-import { Row, Form, FloatingLabel } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
+import { Row, Form, FloatingLabel, Button } from "react-bootstrap";
 import {
   RegisterFormProps,
   RegisterFormValuesProps,

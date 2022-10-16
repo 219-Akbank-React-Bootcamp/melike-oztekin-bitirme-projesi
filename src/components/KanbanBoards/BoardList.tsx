@@ -1,8 +1,13 @@
-import React, { FC, useState } from "react";
-import { Row, Col, Card, Button, Modal, Form } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Row, Card, Button, Modal, Form } from "react-bootstrap";
+import AddBoardForm from "./AddBoardForm";
+import EditBoardForm from "./EditBoardForm";
+import { toast } from "react-toastify";
 import "./style.css";
+import { BoardListAddProps } from "./BoardList.types";
+import service from "../../services/instance";
 
-const KanbanBoards = () => {
+const BoardList = () => {
   const [editBoardModal, setEditBoardModal] = useState(false);
   const handleEditBoardModalClose = () => setEditBoardModal(false);
   const handleEditBoardModalShow = () => {
@@ -14,6 +19,18 @@ const KanbanBoards = () => {
   const handleAddBoardModalShow = () => {
     setAddBoardModal(true);
   };
+
+  const handleBoardListAdd: BoardListAddProps["onBoardListAdd"] = (values) => {
+    service
+      .post("board", values)
+      .then(() => {
+        toast.success("Yeni board ekleme başarılı.");
+      })
+      .catch((error) => {
+        toast.error("bir hata oluştu");
+      });
+  };
+
   return (
     <div className="m-3 text-center">
       <h3 className="mb-3">Bir Liste Seç</h3>
@@ -30,7 +47,7 @@ const KanbanBoards = () => {
             <Card.Title>Yeni Ekle</Card.Title>
           </Card.Body>
         </Card>
-        <Card
+        {/* <Card
           className="text-center p-0 m-2 justify-content-center"
           style={{ width: "14rem" }}
         >
@@ -61,53 +78,16 @@ const KanbanBoards = () => {
               Sil
             </Card.Link>
           </Card.Footer>
-        </Card>
+        </Card> */}
       </Row>
       <Modal show={editBoardModal} onHide={handleEditBoardModalClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Board Düzenle</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form className="mb-5">
-            <Form.Group className="mb-3" controlId="formCategory">
-              <Form.Label>Board Adı </Form.Label>
-              <Form.Control type="text" placeholder="kategori adı giriniz..." />
-            </Form.Group>
-            <Button
-              variant="outline-dark"
-              style={{ width: "100%" }}
-              type="button"
-            >
-              Kaydet
-            </Button>
-          </Form>
-        </Modal.Body>
+        <EditBoardForm />
       </Modal>
       <Modal show={addBoardModal} onHide={handleAddBoardModalClose}>
-        <Modal.Header>
-          <Modal.Title>Yeni Durum Ekle</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3" controlId="formStatus">
-              <Form.Label>Durum </Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="durum bilgisi giriniz..."
-              />
-            </Form.Group>
-            <Button
-              variant="outline-dark"
-              style={{ width: "100%" }}
-              type="button"
-            >
-              Ekle
-            </Button>
-          </Form>
-        </Modal.Body>
+        <AddBoardForm onBoardListAdd={handleBoardListAdd} />
       </Modal>
     </div>
   );
 };
 
-export default KanbanBoards;
+export default BoardList;

@@ -9,7 +9,7 @@ const Header: FC<HeaderProps> = (props) => {
   return (
     <Navbar bg="dark" variant="dark">
       <Container>
-        <Navbar.Brand href="#home">Kanban App</Navbar.Brand>
+        <Navbar.Brand href="#home">Kanban Board App</Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           <Button variant="outline-light" onClick={props.onLogout}>

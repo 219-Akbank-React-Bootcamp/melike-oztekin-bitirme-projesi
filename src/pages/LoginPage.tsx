@@ -1,6 +1,5 @@
-import axios from "axios";
 import React, { FC, useState } from "react";
-import { Alert, Card, Row } from "react-bootstrap";
+import { Card, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import LoginForm from "../components/LoginForm";

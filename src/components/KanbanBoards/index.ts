@@ -1,3 +1,5 @@
-import KanbanBoards from "./KanbanBoards";
+import BoardList from "./BoardList";
+import AddBoardForm from "./AddBoardForm";
+import EditBoardForm from "./EditBoardForm";
 
-export default KanbanBoards;
+export { BoardList, AddBoardForm, EditBoardForm };
