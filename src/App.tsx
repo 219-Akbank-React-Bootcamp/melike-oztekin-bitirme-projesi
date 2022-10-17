@@ -16,7 +16,7 @@ const App = () => {
     setIsLoggedIn(true);
   };
   useEffect(() => {
-    var localToken = localStorage.getItem("token");
+    let localToken = localStorage.getItem("token");
     if (localToken) {
       setIsLoggedIn(true);
     } else {

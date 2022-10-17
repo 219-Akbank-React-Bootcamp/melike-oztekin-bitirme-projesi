@@ -1,4 +1,4 @@
-.card-body:hover{
+.card_body:hover{
     cursor: pointer;
     background-color: #f8f8f8;
     border-radius: 5px;

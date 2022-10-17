@@ -6,17 +6,15 @@ import * as Yup from "yup";
 import jwt_decode from "jwt-decode";
 
 const AddBoardForm: FC<BoardListAddProps> = (props) => {
+  const [userId, setUserId] = useState(0);
   useEffect(() => {
-    var token = localStorage.getItem("token");
+    let token = localStorage.getItem("token");
     if (token !== null) {
-      var decode: any = jwt_decode(token);
+      let decode: any = jwt_decode(token);
       setUserId(decode.id);
-      console.log(decode);
     }
     return () => {};
   }, []);
-
-  const [userId, setUserId] = useState(0);
 
   const formik = useFormik({
     initialValues: {
@@ -30,7 +28,6 @@ const AddBoardForm: FC<BoardListAddProps> = (props) => {
     onSubmit: (values) => {
       values.ownerId = userId;
       props.onBoardListAdd?.(values);
-      console.log(values);
     },
   });
 

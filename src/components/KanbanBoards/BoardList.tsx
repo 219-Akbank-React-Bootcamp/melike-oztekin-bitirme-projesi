@@ -1,88 +1,80 @@
 import React, { useState, useEffect } from "react";
-import { Row, Card, Button, Modal, Form } from "react-bootstrap";
-import AddBoardForm from "./AddBoardForm";
-import EditBoardForm from "./EditBoardForm";
-import { toast } from "react-toastify";
 import "./style.css";
+import { Card, Modal } from "react-bootstrap";
+import AddBoardForm from "./AddBoardForm";
+import { toast } from "react-toastify";
 import { BoardListAddProps } from "./BoardList.types";
 import service from "../../services/instance";
+import BoardListItem from "./BoardListItem";
+import jwt_decode from "jwt-decode";
 
 const BoardList = () => {
-  const [editBoardModal, setEditBoardModal] = useState(false);
-  const handleEditBoardModalClose = () => setEditBoardModal(false);
-  const handleEditBoardModalShow = () => {
-    setEditBoardModal(true);
-  };
-
   const [addBoardModal, setAddBoardModal] = useState(false);
+  const [boardList, setBoardList] = useState([] as any[]);
   const handleAddBoardModalClose = () => setAddBoardModal(false);
   const handleAddBoardModalShow = () => {
     setAddBoardModal(true);
   };
 
+  useEffect(() => {
+    getBoardList();
+    return () => {};
+  }, []);
+
   const handleBoardListAdd: BoardListAddProps["onBoardListAdd"] = (values) => {
     service
-      .post("board", values)
+      .post("board", values, {
+        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+      })
       .then(() => {
         toast.success("Yeni board ekleme başarılı.");
+        getBoardList();
       })
       .catch((error) => {
-        toast.error("bir hata oluştu");
+        toast.error("Bir hata oluştu");
+      });
+  };
+
+  const getBoardList = () => {
+    let token = localStorage.getItem("token");
+    let userId = 0;
+    if (token !== null) {
+      let decode: any = jwt_decode(token);
+      userId = decode.id;
+    }
+    service
+      .get("board", {
+        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+      })
+      .then((response) => {
+        let data = response.data.filter((x: any) => x.ownerId == userId);
+        setBoardList(data);
       });
   };
 
   return (
     <div className="m-3 text-center">
       <h3 className="mb-3">Bir Liste Seç</h3>
-      <Row className="justify-content-center">
-        <Card
-          className="text-center px-0 m-2 justify-content-center"
-          style={{ width: "14rem" }}
-        >
-          <Card.Body
-            className="card-body p-5"
-            onClick={() => handleAddBoardModalShow()}
+      <div className="d-flex flex-wrap justify-content-center">
+        <div className="m-2">
+          <Card
+            className="card_body py-4 justify-content-center"
+            style={{ width: "14rem" }}
           >
-            <i className="card_icon_div fa-solid fa-plus"></i>
-            <Card.Title>Yeni Ekle</Card.Title>
-          </Card.Body>
-        </Card>
-        {/* <Card
-          className="text-center p-0 m-2 justify-content-center"
-          style={{ width: "14rem" }}
-        >
-          <Card.Body className="card-body p-4">
-            <i className="card_icon_div fa-solid fa-person-chalkboard"></i>
-            <Card.Title>listname</Card.Title>
-          </Card.Body>
-          <Card.Footer className="d-flex justify-content-between">
-            <Card.Link
-              href="#"
-              style={{
-                color: "green",
-                textDecoration: "none",
-                fontSize: "16px",
-              }}
-              onClick={() => handleEditBoardModalShow()}
-            >
-              Düzenle
-            </Card.Link>
-            <Card.Link
-              href="#"
-              style={{
-                color: "orange",
-                textDecoration: "none",
-                fontSize: "16px",
-              }}
-            >
-              Sil
-            </Card.Link>
-          </Card.Footer>
-        </Card> */}
-      </Row>
-      <Modal show={editBoardModal} onHide={handleEditBoardModalClose}>
-        <EditBoardForm />
-      </Modal>
+            <Card.Body onClick={() => handleAddBoardModalShow()}>
+              <div className="card_icon_div">
+                <i className="fa-solid fa-plus"></i>
+              </div>
+              <Card.Title>Yeni Ekle</Card.Title>
+            </Card.Body>
+          </Card>
+        </div>
+        {boardList.map((x) => (
+          <div className="m-2" key={x.id}>
+            <BoardListItem board={x} />
+          </div>
+        ))}
+      </div>
       <Modal show={addBoardModal} onHide={handleAddBoardModalClose}>
         <AddBoardForm onBoardListAdd={handleBoardListAdd} />
       </Modal>
