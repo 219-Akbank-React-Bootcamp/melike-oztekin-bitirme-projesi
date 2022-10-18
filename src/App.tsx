@@ -5,7 +5,8 @@ import { Container } from "react-bootstrap";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import KanbanBoardsPage from "./pages/KanbanBoardsPage";
+import BoardsPage from "./pages/BoardsPage";
+import ListsPage from "./pages/ListsPage";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -47,8 +48,12 @@ const App = () => {
   ]);
   const routerLoggedIn = createBrowserRouter([
     {
-      path: "/kanbanboards",
-      element: <KanbanBoardsPage onLogout={handleLogout} />,
+      path: "/boards",
+      element: <BoardsPage onLogout={handleLogout} />,
+    },
+    {
+      path: "/lists",
+      element: <ListsPage onLogout={handleLogout} />,
     },
   ]);
   return (

@@ -1,14 +1,13 @@
 import React, { FC } from "react";
-import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
-import { BoardList } from "../components/KanbanBoards";
+import { Lists } from "../components/Lists";
 
-export type KanbanBoardsProps = {
+export type ListsProps = {
   onLogout: () => void;
 };
 
-const KanbanBoardsPage: FC<KanbanBoardsProps> = (props) => {
+const ListsPage: FC<ListsProps> = (props) => {
   const navigate = useNavigate();
   const handleLogout = () => {
     props.onLogout();
@@ -17,9 +16,9 @@ const KanbanBoardsPage: FC<KanbanBoardsProps> = (props) => {
   return (
     <div>
       <Header onLogout={handleLogout} />
-      <BoardList />
+      <Lists />
     </div>
   );
 };
 
-export default KanbanBoardsPage;
+export default ListsPage;

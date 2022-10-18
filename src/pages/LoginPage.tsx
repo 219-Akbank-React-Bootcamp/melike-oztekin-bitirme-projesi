@@ -15,7 +15,7 @@ const LoginPage: FC<LoginPageProps> = (props) => {
       .post("auth/login", values)
       .then(({ data }) => {
         props.onSuccess?.(data.token);
-        navigate("/kanbanboards");
+        navigate("/boards");
       })
       .catch((error) => {
         toast.error("Bilgilerinizi kontrol ediniz.");

@@ -71,7 +71,7 @@ const BoardList = () => {
         </div>
         {boardList.map((x) => (
           <div className="m-2" key={x.id}>
-            <BoardListItem board={x} />
+            <BoardListItem getBoardList={getBoardList} board={x} />
           </div>
         ))}
       </div>

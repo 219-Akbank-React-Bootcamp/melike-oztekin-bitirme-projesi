@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Card, Modal } from "react-bootstrap";
 import EditBoardForm from "./EditBoardForm";
 import service from "../../services/instance";
 import jwt_decode from "jwt-decode";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const BoardListItem = (props: any) => {
-  //const [newBoardList, setNewBoardList] = useState([] as any[]);
   const [editBoardModal, setEditBoardModal] = useState(false);
+  const [selectBoard, setSelectBoard] = useState({} as any);
   const handleEditBoardModalClose = () => setEditBoardModal(false);
-  const handleEditBoardModalShow = () => {
+  const handleEditBoardModalShow = (x: any) => {
+    setSelectBoard(x);
     setEditBoardModal(true);
   };
 
@@ -26,15 +28,8 @@ const BoardListItem = (props: any) => {
           headers: { Authorization: "Bearer " + localStorage.getItem("token") },
         })
         .then((response) => {
-          // service.get("board", {
-          //   headers: {
-          //     Authorization: "Bearer " + localStorage.getItem("token"),
-          //   },
-          // });
-          // let data = response.data.filter((x: any) => x.ownerId == userId);
           toast.success("Board silindi.");
-          // setNewBoardList(data);
-          // console.log(data);
+          props.getBoardList();
         })
         .catch(() => {
           toast.error("Bir hata oluştu.");
@@ -45,12 +40,14 @@ const BoardListItem = (props: any) => {
   return (
     <div>
       <Card className="justify-content-center" style={{ width: "14rem" }}>
-        <Card.Body className="card_body p-4">
-          <div className="card_icon_div">
-            <i className="fa-solid fa-person-chalkboard"></i>
-          </div>
-          <Card.Title>{props.board.title}</Card.Title>
-        </Card.Body>
+        <Link to="/lists" style={{ textDecoration: "none", color: "black" }}>
+          <Card.Body className="card_body p-4">
+            <div className="card_icon_div">
+              <i className="fa-solid fa-person-chalkboard"></i>
+            </div>
+            <Card.Title>{props.board.title}</Card.Title>
+          </Card.Body>
+        </Link>
         <Card.Footer className="d-flex justify-content-between">
           <Card.Link
             href="#"
@@ -59,7 +56,7 @@ const BoardListItem = (props: any) => {
               textDecoration: "none",
               fontSize: "16px",
             }}
-            onClick={() => handleEditBoardModalShow()}
+            onClick={() => handleEditBoardModalShow(props.board)}
           >
             Düzenle
           </Card.Link>
@@ -78,7 +75,7 @@ const BoardListItem = (props: any) => {
       </Card>
 
       <Modal show={editBoardModal} onHide={handleEditBoardModalClose}>
-        <EditBoardForm />
+        <EditBoardForm getBoardList={props.getBoardList} board={selectBoard} />
       </Modal>
     </div>
   );
