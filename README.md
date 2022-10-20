@@ -22,7 +22,7 @@ Boardlarınız listelendiğinde isminin yer altığı kısma tıklayak ilgili bo
 
 > Bir board içerisine girdiğinizde navbar menü üzerinde yer alan **Kanban Board App** başlığına tıklayarak kişiye ait boardların listelendiği ekrana dönüş yapabilirsiniz.
 
-#### :x:Eksikler
+### :x: Eksikler
 - Listeler içerisine kart işlemleri yapılmadı
 - Drag and Drop yapılmadı
 - Kullanıcılar arası paylaşım işlemleri yapılmadı
