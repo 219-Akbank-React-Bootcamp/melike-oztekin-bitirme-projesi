@@ -52,7 +52,7 @@ const App = () => {
       element: <BoardsPage onLogout={handleLogout} />,
     },
     {
-      path: "/lists",
+      path: "/lists/:id",
       element: <ListsPage onLogout={handleLogout} />,
     },
   ]);

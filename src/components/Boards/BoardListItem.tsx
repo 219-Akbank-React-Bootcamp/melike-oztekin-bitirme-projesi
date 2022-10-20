@@ -40,9 +40,12 @@ const BoardListItem = (props: any) => {
   return (
     <div>
       <Card className="justify-content-center" style={{ width: "14rem" }}>
-        <Link to="/lists" style={{ textDecoration: "none", color: "black" }}>
+        <Link
+          to={`/lists/${props.board.id}`}
+          style={{ textDecoration: "none", color: "black" }}
+        >
           <Card.Body className="card_body p-4">
-            <div className="card_icon_div">
+            <div className="board_add_icon">
               <i className="fa-solid fa-person-chalkboard"></i>
             </div>
             <Card.Title>{props.board.title}</Card.Title>

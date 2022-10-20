@@ -33,7 +33,7 @@ const Header: FC<HeaderProps> = (props) => {
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/boards">
           <i className="bi bi-kanban"></i>&nbsp;Kanban Board App
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />

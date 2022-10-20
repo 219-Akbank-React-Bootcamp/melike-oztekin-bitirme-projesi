@@ -62,7 +62,7 @@ const BoardList = () => {
             style={{ width: "14rem" }}
           >
             <Card.Body onClick={() => handleAddBoardModalShow()}>
-              <div className="card_icon_div">
+              <div className="board_add_icon">
                 <i className="fa-solid fa-plus"></i>
               </div>
               <Card.Title>Yeni Ekle</Card.Title>
