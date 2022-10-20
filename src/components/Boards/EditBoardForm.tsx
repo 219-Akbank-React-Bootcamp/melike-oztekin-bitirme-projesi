@@ -74,6 +74,7 @@ const EditBoardForm: FC<BoardListItemProps> = (props: any) => {
             variant="outline-dark"
             style={{ width: "100%" }}
             type="submit"
+            onClick={props.onHide}
           >
             Kaydet
           </Button>

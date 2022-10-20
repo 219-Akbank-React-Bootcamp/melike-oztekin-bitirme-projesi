@@ -30,7 +30,7 @@ const AddListForm: FC<ListAddProps> = (props) => {
     onSubmit: (values) => {
       values.ownerId = userId;
       props.onListAdd?.(values);
-      console.log(values);
+      values.title = "";
     },
   });
 

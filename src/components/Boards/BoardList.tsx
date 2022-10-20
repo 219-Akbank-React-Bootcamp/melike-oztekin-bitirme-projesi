@@ -76,7 +76,10 @@ const BoardList = () => {
         ))}
       </div>
       <Modal show={addBoardModal} onHide={handleAddBoardModalClose}>
-        <AddBoardForm onBoardListAdd={handleBoardListAdd} />
+        <AddBoardForm
+          onHide={handleAddBoardModalClose}
+          onBoardListAdd={handleBoardListAdd}
+        />
       </Modal>
     </div>
   );

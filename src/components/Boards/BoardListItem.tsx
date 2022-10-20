@@ -78,7 +78,11 @@ const BoardListItem = (props: any) => {
       </Card>
 
       <Modal show={editBoardModal} onHide={handleEditBoardModalClose}>
-        <EditBoardForm getBoardList={props.getBoardList} board={selectBoard} />
+        <EditBoardForm
+          onHide={handleEditBoardModalClose}
+          getBoardList={props.getBoardList}
+          board={selectBoard}
+        />
       </Modal>
     </div>
   );

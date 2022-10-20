@@ -1,42 +1,55 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import { Button, Modal, Form, FloatingLabel } from "react-bootstrap";
-import { BoardListAddProps, BoardListAddValuesProps } from "./BoardList.types";
+import service from "../../services/instance";
+import jwt_decode from "jwt-decode";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import jwt_decode from "jwt-decode";
+import { ListItemProps, ListItemValuesProps } from "./Lists.types";
+import { toast } from "react-toastify";
 
-const AddBoardForm: FC<BoardListAddProps> = (props) => {
+const EditListForm: FC<ListItemProps> = (props: any) => {
   const [userId, setUserId] = useState(0);
-
-  useEffect(() => {
+  const updateList = (data: any) => {
     let token = localStorage.getItem("token");
+    let userId: 0;
     if (token !== null) {
       let decode: any = jwt_decode(token);
-      setUserId(decode.id);
+      userId = decode.id;
     }
-    return () => {};
-  }, []);
+    service
+      .put("list/" + `${props.list.id}`, data, {
+        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+      })
+      .then(() => {
+        toast.success("güncelleme başarılı");
+        props.getList();
+      })
+      .catch(() => {
+        toast.error("bir hata oluştu.");
+      });
+  };
 
   const formik = useFormik({
     initialValues: {
-      title: "",
+      title: props.list.title,
+      boardId: props.list.boardId,
       ownerId: userId,
-    } as BoardListAddValuesProps,
+    } as ListItemValuesProps,
     validationSchema: Yup.object({
       title: Yup.string().required("Bu alan boş geçilemez."),
+      boardId: Yup.number().required("Bu alan boş geçilemez."),
       ownerId: Yup.number().required("Bu alan boş geçilemez."),
     }),
     onSubmit: (values) => {
       values.ownerId = userId;
-      props.onBoardListAdd?.(values);
-      values.title = "";
+      updateList(values);
     },
   });
 
   return (
     <>
       <Modal.Header closeButton>
-        <Modal.Title>Yeni Board Ekle</Modal.Title>
+        <Modal.Title>Board Düzenle</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={formik.handleSubmit}>
@@ -45,10 +58,10 @@ const AddBoardForm: FC<BoardListAddProps> = (props) => {
               id="title"
               name="title"
               type="text"
-              placeholder="Board adı"
+              placeholder="Board adı giriniz..."
+              value={formik.values.title}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.title}
             />
             {formik.touched.title && formik.errors.title ? (
               <div style={{ color: "red" }}>
@@ -62,7 +75,7 @@ const AddBoardForm: FC<BoardListAddProps> = (props) => {
             type="submit"
             onClick={props.onHide}
           >
-            Ekle
+            Kaydet
           </Button>
         </form>
       </Modal.Body>
@@ -70,4 +83,4 @@ const AddBoardForm: FC<BoardListAddProps> = (props) => {
   );
 };
 
-export default AddBoardForm;
+export default EditListForm;

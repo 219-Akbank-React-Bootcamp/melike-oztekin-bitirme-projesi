@@ -48,11 +48,8 @@ const Lists = () => {
         headers: { Authorization: "Bearer " + localStorage.getItem("token") },
       })
       .then((response) => {
-        console.log(response);
         let data = response.data.filter((x: any) => x.boardId == id);
         setList(data);
-        console.log(userId);
-        console.log(data);
       });
   };
 

@@ -1,5 +1,6 @@
 export type BoardListAddProps = {
   onBoardListAdd: (values: BoardListAddValuesProps) => void;
+  onHide: any;
 };
 
 export type BoardListAddValuesProps = {
@@ -10,6 +11,7 @@ export type BoardListAddValuesProps = {
 export type BoardListItemProps = {
   board: any;
   getBoardList: any;
+  onHide: any;
 };
 
 export type BoardListItemValuesProps = {

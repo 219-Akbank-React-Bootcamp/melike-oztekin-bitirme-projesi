@@ -5,9 +5,8 @@ import { schema } from ".";
 const getById: RequestHandler = async (request, response, next) => {
   try {
     const { id } = schema.params.parse(request.params);
-    console.log(id)
     const board = await Board.scope("nestedInclude").findOne({
-      where: { id: Number(id) }
+      where: { id: Number(id) },
     });
 
     if (
